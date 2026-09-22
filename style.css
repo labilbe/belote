@@ -178,6 +178,29 @@ body {
   opacity: 0.9;
 }
 
+.carte .figure {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 86%;
+  height: 80%;
+  display: block;
+}
+.carte-figure {
+  background:
+    radial-gradient(circle at 50% 42%, #fffdf7 0%, #f6efe0 100%);
+}
+.carte-figure::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 4px;
+  border: 1px solid currentColor;
+  opacity: 0.22;
+  pointer-events: none;
+}
+
 .carte.dos {
   background:
     repeating-linear-gradient(45deg, #8c2c2c 0 6px, #6f2020 6px 12px);
