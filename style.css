@@ -234,6 +234,40 @@ body {
   to { opacity: 1; scale: 1; }
 }
 
+/* Ramassage : la carte maîtresse s'allume, puis le pli file vers le gagnant. */
+.carte.posee.maitresse {
+  z-index: 3;
+  box-shadow: 0 0 0 2px var(--or), 0 0 22px rgba(217, 180, 91, 0.7), var(--ombre);
+}
+
+.pli {
+  transition: transform 0.6s cubic-bezier(0.32, 0, 0.2, 1), opacity 0.6s ease-in;
+}
+.pli.part { opacity: 0; }
+.pli.part-sud { transform: translateY(calc(var(--h-carte) * 1.7)) scale(0.45); }
+.pli.part-nord { transform: translateY(calc(var(--h-carte) * -1.7)) scale(0.45); }
+.pli.part-ouest { transform: translateX(calc(var(--l-carte) * -3.2)) scale(0.45); }
+.pli.part-est { transform: translateX(calc(var(--l-carte) * 3.2)) scale(0.45); }
+
+.etiquette.gagne {
+  background: var(--or);
+  color: #1a2b22;
+  border-color: var(--or);
+  font-weight: 600;
+  animation: pli-gagne 0.5s ease-out;
+}
+@keyframes pli-gagne {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pli { transition: opacity 0.4s ease-in; }
+  .pli.part-sud, .pli.part-nord, .pli.part-ouest, .pli.part-est { transform: none; }
+  .etiquette.gagne { animation: none; }
+}
+
 .talon {
   position: absolute;
   right: 4%;

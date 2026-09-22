@@ -4,9 +4,11 @@ import { SUIT_COLOR, SUIT_LABEL, SUIT_SYMBOL, RANK_LABEL } from './cards.js';
 import { faceCarte } from './faces.js';
 import { Game, PLAYER_NAMES, TEAM_NAMES } from './game.js';
 import { choisirCarte, deciderEnchere } from './ai.js';
-import { TEAM_OF } from './rules.js';
+import { TEAM_OF, trickWinner } from './rules.js';
 
-const DELAIS = { enchere: 650, carte: 750, pli: 1300, redonne: 1200 };
+const DELAIS = { enchere: 650, carte: 750, pli: 1500, redonne: 1200 };
+// Ramassage : temps d'arrêt sur la carte maîtresse, puis vol des cartes vers le gagnant.
+const RAMASSAGE = { pause: 420 };
 const SIEGES = ['sud', 'ouest', 'nord', 'est'];
 
 // En dessous de cette largeur les cartes rétrécissent : les figures illustrées
@@ -82,10 +84,13 @@ function rendreMainsAdverses() {
 
 function rendrePli() {
   const zone = $('pli');
+  zone.className = 'pli';
   zone.innerHTML = '';
+  const maitre = game.phase === 'finPli' ? trickWinner(game.pli, game.atout) : null;
   for (const { player, card } of game.pli) {
     const el = elCarte(card);
     el.classList.add('posee', `posee-${SIEGES[player]}`);
+    if (player === maitre) el.classList.add('maitresse');
     zone.appendChild(el);
   }
 }
@@ -133,6 +138,7 @@ function rendreEntetes() {
   for (let p = 0; p < 4; p++) {
     const etiq = $(`etiq-${p}`);
     etiq.textContent = PLAYER_NAMES[p];
+    etiq.classList.remove('gagne');
     etiq.classList.toggle('actif', estSonTour(p));
     etiq.classList.toggle('donneur', p === game.donneur);
     etiq.classList.toggle('preneur', p === game.preneur);
@@ -229,6 +235,16 @@ function tenterJouer(carte) {
   boucle();
 }
 
+/**
+ * Met en avant la carte maîtresse, puis fait glisser le pli vers la place du
+ * gagnant. Purement visuel : l'état du jeu ne bouge qu'avec `ramasser()`.
+ */
+function animerRamassage(gagnant) {
+  $(`etiq-${gagnant}`).classList.add('gagne');
+  const zone = $('pli');
+  setTimeout(() => zone.classList.add('part', `part-${SIEGES[gagnant]}`), RAMASSAGE.pause);
+}
+
 function plusTard(fn, delai) {
   setTimeout(() => {
     fn();
@@ -254,6 +270,7 @@ function boucle() {
       if (game.tour !== 0) plusTard(() => game.jouer(game.tour, choisirCarte(game, game.tour)), DELAIS.carte);
       break;
     case 'finPli':
+      animerRamassage(trickWinner(game.pli, game.atout));
       plusTard(() => game.ramasser(), DELAIS.pli);
       break;
     case 'finDonne':
