@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Belote</title>
+<meta name="description" content="Jeu de belote classique à quatre, jouable directement dans le navigateur.">
+<meta name="theme-color" content="#0d3b2e">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="barre">
+  <h1>Belote</h1>
+  <div class="scores">
+    <div class="score" data-equipe="0">
+      <span class="score-nom" id="nom-equipe-0">Vous &amp; Nord</span>
+      <span class="score-valeur" id="score-0">0</span>
+    </div>
+    <div class="score-sep">/</div>
+    <div class="score" data-equipe="1">
+      <span class="score-nom" id="nom-equipe-1">Ouest &amp; Est</span>
+      <span class="score-valeur" id="score-1">0</span>
+    </div>
+  </div>
+  <div class="infos">
+    <span id="info-donne">Donne 1</span>
+    <span id="info-atout" class="atout-pastille" hidden></span>
+    <span id="info-contrat"></span>
+  </div>
+  <button type="button" id="btn-regles" class="lien">Règles</button>
+</header>
+
+<main class="tapis" id="tapis">
+  <div class="place place-nord">
+    <div class="etiquette" id="etiq-2">Nord</div>
+    <div class="main-adverse" id="main-2"></div>
+  </div>
+  <div class="place place-ouest">
+    <div class="etiquette" id="etiq-1">Ouest</div>
+    <div class="main-adverse" id="main-1"></div>
+  </div>
+  <div class="place place-est">
+    <div class="etiquette" id="etiq-3">Est</div>
+    <div class="main-adverse" id="main-3"></div>
+  </div>
+
+  <div class="centre">
+    <div class="pli" id="pli"></div>
+    <div class="talon" id="talon" hidden>
+      <div class="talon-dos"></div>
+      <div class="retournee" id="retournee"></div>
+    </div>
+  </div>
+
+  <div class="place place-sud">
+    <div class="main-joueur" id="main-0"></div>
+    <div class="etiquette" id="etiq-0">Vous</div>
+  </div>
+</main>
+
+<section class="panneau" id="panneau-encheres" hidden>
+  <p class="panneau-titre" id="encheres-titre"></p>
+  <div class="panneau-actions" id="encheres-actions"></div>
+</section>
+
+<section class="panneau panneau-large" id="panneau-donne" hidden>
+  <p class="panneau-titre" id="donne-titre"></p>
+  <table class="feuille" id="feuille"></table>
+  <div class="panneau-actions">
+    <button type="button" class="bouton principal" id="btn-suivante">Donne suivante</button>
+  </div>
+</section>
+
+<section class="panneau panneau-large" id="panneau-fin" hidden>
+  <p class="panneau-titre" id="fin-titre"></p>
+  <p id="fin-detail"></p>
+  <div class="panneau-actions">
+    <button type="button" class="bouton principal" id="btn-rejouer">Nouvelle partie</button>
+  </div>
+</section>
+
+<aside class="journal" id="journal" aria-live="polite"></aside>
+
+<dialog id="dlg-regles">
+  <h2>Règles appliquées</h2>
+  <ul>
+    <li>Jeu de 32 cartes, quatre joueurs en deux équipes (Sud &amp; Nord contre Ouest &amp; Est).</li>
+    <li>Distribution 3 + 2, une carte retournée. Premier tour : prendre à la couleur retournée ou passer. Second tour : nommer une autre couleur.</li>
+    <li>Ordre à l'atout : V (20) · 9 (14) · A (11) · 10 (10) · R (4) · D (3) · 8 · 7.</li>
+    <li>Ordre à la couleur : A (11) · 10 (10) · R (4) · D (3) · V (2) · 9 · 8 · 7.</li>
+    <li>Obligation de fournir, de couper, de surcouper et de monter à l'atout. Le partenaire maître dispense de couper.</li>
+    <li>Belote &amp; rebelote (R + D d'atout) : 20 points. Dix de der : 10 points au dernier pli.</li>
+    <li>Le preneur doit faire plus de points que la défense. Sinon il est dedans : 162 à l'adversaire. Capot : 252. Égalité 81-81 : litige, les points du preneur sont mis en cagnotte.</li>
+    <li>La partie s'arrête à 1000 points.</li>
+  </ul>
+  <button type="button" class="bouton" id="btn-fermer-regles">Fermer</button>
+</dialog>
+
+<script type="module" src="src/ui.js"></script>
+</body>
+</html>
