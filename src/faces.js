@@ -17,10 +17,9 @@ const NOM_COULEUR = { pique: 'spades', coeur: 'hearts', carreau: 'diamonds', tre
 
 const ENCRE = { rouge: '#e6180a', noir: '#000000' };
 
-// Contour et filet intérieur repris tels quels des cartes d'origine.
+// Contour repris des cartes d'origine ; comme sur elles, le filet intérieur est retiré.
 const CADRE = `
-  <path fill="#fff" stroke="#000" stroke-width=".5" d="M166.84 235.55a6.89 6.89 0 0 1-6.87 6.87H7.11a6.89 6.89 0 0 1-6.86-6.87V7.12A6.89 6.89 0 0 1 7.11.25H160a6.89 6.89 0 0 1 6.87 6.87z"/>
-  <path fill="#fff" stroke="#000" stroke-linejoin="round" stroke-width="1.5" d="M157.81 237.75H9.54V4.3h148.27z"/>`;
+  <path fill="#fff" stroke="#000" stroke-width=".5" d="M166.84 235.55a6.89 6.89 0 0 1-6.87 6.87H7.11a6.89 6.89 0 0 1-6.86-6.87V7.12A6.89 6.89 0 0 1 7.11.25H160a6.89 6.89 0 0 1 6.87 6.87z"/>`;
 
 // Colonnes et lignes de la disposition classique des pips.
 const COLONNES = [48, 119];
@@ -33,6 +32,10 @@ const DISPOSITIONS = {
   10: { lignes: [0, 2, 4, 6], milieu: [88, 154.6] },
   A: { lignes: [], milieu: [121.3], echelle: 3.9 },
 };
+
+// En petite taille, les figures deviennent illisibles : on leur substitue une face
+// sobre — index d'angle et grande enseigne centrale.
+const FIGURE_SOBRE = { lignes: [], milieu: [121.3], echelle: 3.4 };
 
 /** Un pip posé en (x, y) ; ceux de la moitié basse sont retournés, comme sur un vrai jeu. */
 function pip(suit, x, y, echelle = 1.78, retourner = y > CENTRE_Y) {
@@ -60,13 +63,16 @@ export function urlFigure(carte) {
   return `assets/figures/${NOM_FIGURE[carte.rank]}_of_${NOM_COULEUR[carte.suit]}_fr.svg`;
 }
 
-/** Face complète d'une carte, en HTML prêt à insérer. */
-export function faceCarte(carte) {
-  if (estFigure(carte)) {
+/**
+ * Face complète d'une carte, en HTML prêt à insérer.
+ * @param {boolean} sobre - true pour les petites tailles : pas d'illustration.
+ */
+export function faceCarte(carte, sobre = false) {
+  if (estFigure(carte) && !sobre) {
     return `<img class="face" src="${urlFigure(carte)}" alt="" draggable="false">`;
   }
 
-  const { lignes, milieu, echelle } = DISPOSITIONS[carte.rank];
+  const { lignes, milieu, echelle } = DISPOSITIONS[carte.rank] ?? FIGURE_SOBRE;
   const pips = [
     ...lignes.flatMap((i) => COLONNES.map((x) => pip(carte.suit, x, LIGNES[i]))),
     ...milieu.map((y) => pip(carte.suit, CENTRE_X, y, echelle)),

@@ -9,6 +9,10 @@ import { TEAM_OF } from './rules.js';
 const DELAIS = { enchere: 650, carte: 750, pli: 1300, redonne: 1200 };
 const SIEGES = ['sud', 'ouest', 'nord', 'est'];
 
+// En dessous de cette largeur les cartes rétrécissent : les figures illustrées
+// laissent la place à des faces sobres, plus lisibles.
+const PETITES_CARTES = window.matchMedia('(max-width: 860px)');
+
 const $ = (id) => document.getElementById(id);
 let game = new Game();
 let attenteJoueur = false;
@@ -23,7 +27,7 @@ function elCarte(carte, { dos = false, sens = 'sud' } = {}) {
     return el;
   }
   el.classList.add(SUIT_COLOR[carte.suit]);
-  el.innerHTML = faceCarte(carte);
+  el.innerHTML = faceCarte(carte, PETITES_CARTES.matches);
   el.setAttribute('aria-label', `${RANK_LABEL[carte.rank]} de ${SUIT_LABEL[carte.suit]}`);
   return el;
 }
@@ -269,6 +273,7 @@ $('btn-rejouer').addEventListener('click', () => {
   game = new Game();
   boucle();
 });
+PETITES_CARTES.addEventListener('change', rendre);
 $('btn-regles').addEventListener('click', () => $('dlg-regles').showModal());
 $('btn-fermer-regles').addEventListener('click', () => $('dlg-regles').close());
 

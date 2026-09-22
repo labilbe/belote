@@ -62,6 +62,8 @@ npm test
 Les figures sont les vraies cartes du **portrait officiel français** (jeu SVG de David Bellot,
 récupérées sur Wikimedia Commons) ; les cartes chiffrées sont composées dans la même géométrie
 et avec les mêmes symboles d'enseigne, pour que le jeu reste cohérent.
+En dessous de 860 px de large, les cartes rétrécissent et les figures illustrées cèdent la place
+à une face sobre (index et grande enseigne), plus lisible — les images ne sont alors pas chargées.
 Crédits et licence (LGPL 2.1 ou ultérieure) : `assets/figures/CREDITS.md`.
 
 Publié via GitHub Pages depuis la branche `main` (fichier `.nojekyll` pour servir le dossier tel quel).
