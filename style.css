@@ -1,6 +1,6 @@
 :root {
-  --l-carte: 62px;
-  --h-carte: 88px;
+  --l-carte: 84px;
+  --h-carte: 122px;
   --feutre: #0d3b2e;
   --feutre-clair: #175843;
   --or: #d9b45b;
@@ -156,49 +156,13 @@ body {
 }
 .carte.rouge { color: var(--rouge); }
 
-.carte .coin {
-  position: absolute;
-  font-size: 0.8rem;
-  font-weight: 700;
-  line-height: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.carte .coin i { font-style: normal; font-size: 0.75rem; }
-.carte .coin.haut { top: 5px; left: 5px; }
-.carte .coin.bas { bottom: 5px; right: 5px; transform: rotate(180deg); }
-
-.carte .pip {
+.carte .face {
   position: absolute;
   inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: 1.7rem;
-  opacity: 0.9;
-}
-
-.carte .figure {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 86%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
   display: block;
-}
-.carte-figure {
-  background:
-    radial-gradient(circle at 50% 42%, #fffdf7 0%, #f6efe0 100%);
-}
-.carte-figure::after {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border-radius: 4px;
-  border: 1px solid currentColor;
-  opacity: 0.22;
-  pointer-events: none;
+  border-radius: 6px;
 }
 
 .carte.dos {
@@ -228,14 +192,13 @@ body {
   display: flex;
   padding-top: 18px;
 }
-.main-joueur .carte { margin-left: -14px; }
+.main-joueur .carte { margin-left: calc(var(--l-carte) * -0.3); }
 .main-joueur .carte:first-child { margin-left: 0; }
-.main-joueur .coin.bas { display: none; }
 .main-joueur .carte.est-atout { box-shadow: 0 0 0 2px var(--or), var(--ombre); }
 .main-joueur .carte.jouable { cursor: pointer; }
 .main-joueur .carte.jouable:hover,
 .main-joueur .carte.jouable:focus-visible {
-  transform: translateY(-16px);
+  transform: translateY(-20px);
   outline: none;
   z-index: 2;
 }
@@ -252,7 +215,7 @@ body {
 
 .pli {
   position: relative;
-  width: calc(var(--l-carte) * 3.2);
+  width: calc(var(--l-carte) * 2.6);
   height: calc(var(--h-carte) * 2.4);
 }
 .carte.posee {
@@ -261,10 +224,10 @@ body {
   left: 50%;
   animation: pose 0.18s ease-out;
 }
-.posee-sud { transform: translate(-50%, 10px) rotate(2deg); }
-.posee-nord { transform: translate(-50%, calc(-100% - 10px)) rotate(-3deg); }
-.posee-ouest { transform: translate(calc(-100% - 10px), -50%) rotate(-6deg); }
-.posee-est { transform: translate(10px, -50%) rotate(6deg); }
+.posee-sud { transform: translate(-50%, calc(var(--h-carte) * 0.14)) rotate(2deg); }
+.posee-nord { transform: translate(-50%, calc(-100% - var(--h-carte) * 0.14)) rotate(-3deg); }
+.posee-ouest { transform: translate(calc(-100% - var(--l-carte) * 0.22), -50%) rotate(-5deg); }
+.posee-est { transform: translate(calc(var(--l-carte) * 0.22), -50%) rotate(5deg); }
 
 @keyframes pose {
   from { opacity: 0; scale: 0.9; }
@@ -380,15 +343,17 @@ dialog li { margin-bottom: 0.4rem; }
 /* ---------------------------------------------------------- Responsive */
 
 @media (max-width: 860px) {
-  :root { --l-carte: 50px; --h-carte: 71px; }
+  :root { --l-carte: 62px; --h-carte: 90px; }
   .journal { display: none; }
 }
 
 @media (max-width: 560px) {
-  :root { --l-carte: 42px; --h-carte: 60px; }
+  :root { --l-carte: 56px; --h-carte: 81px; }
+  /* La main occupe toute la largeur : les piles adverses passent derrière. */
+  .place-sud { grid-column: 1 / -1; }
+  .main-joueur .carte { margin-left: calc(var(--l-carte) * -0.4); }
   .barre { gap: 0.6rem; padding: 0.5rem 0.7rem; }
   .barre h1 { font-size: 1.15rem; }
   .tapis { padding: 0.5rem 0.4rem 0.8rem; grid-template-columns: 46px 1fr 46px; }
-  .main-joueur .carte { margin-left: -18px; }
   .talon { right: 0; }
 }

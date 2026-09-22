@@ -1,7 +1,7 @@
 // Interface : rendu du tapis, interactions du joueur humain, rythme des adversaires.
 
 import { SUIT_COLOR, SUIT_LABEL, SUIT_SYMBOL, RANK_LABEL } from './cards.js';
-import { figureSVG } from './figures.js';
+import { faceCarte } from './faces.js';
 import { Game, PLAYER_NAMES, TEAM_NAMES } from './game.js';
 import { choisirCarte, deciderEnchere } from './ai.js';
 import { TEAM_OF } from './rules.js';
@@ -23,12 +23,7 @@ function elCarte(carte, { dos = false, sens = 'sud' } = {}) {
     return el;
   }
   el.classList.add(SUIT_COLOR[carte.suit]);
-  const figure = figureSVG(carte);
-  if (figure) el.classList.add('carte-figure');
-  el.innerHTML = `
-    <span class="coin haut">${RANK_LABEL[carte.rank]}<i>${SUIT_SYMBOL[carte.suit]}</i></span>
-    ${figure || `<span class="pip">${SUIT_SYMBOL[carte.suit]}</span>`}
-    <span class="coin bas">${RANK_LABEL[carte.rank]}<i>${SUIT_SYMBOL[carte.suit]}</i></span>`;
+  el.innerHTML = faceCarte(carte);
   el.setAttribute('aria-label', `${RANK_LABEL[carte.rank]} de ${SUIT_LABEL[carte.suit]}`);
   return el;
 }

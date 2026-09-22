@@ -53,6 +53,15 @@ npm test
 | `src/rules.js` | Cartes jouables, maître du pli, décompte d'une donne. |
 | `src/game.js` | Machine à états : distribution, enchères, plis, scores. |
 | `src/ai.js` | Décisions d'enchère et choix de carte des adversaires. |
+| `src/faces.js` | Faces des cartes : figures du portrait français, chiffrées composées. |
+| `src/pips.js` | Symboles d'enseigne (pique, cœur, carreau, trèfle). |
 | `src/ui.js` | Rendu du tapis et interactions du joueur. |
+
+## Cartes
+
+Les figures sont les vraies cartes du **portrait officiel français** (jeu SVG de David Bellot,
+récupérées sur Wikimedia Commons) ; les cartes chiffrées sont composées dans la même géométrie
+et avec les mêmes symboles d'enseigne, pour que le jeu reste cohérent.
+Crédits et licence (LGPL 2.1 ou ultérieure) : `assets/figures/CREDITS.md`.
 
 Publié via GitHub Pages depuis la branche `main` (fichier `.nojekyll` pour servir le dossier tel quel).
